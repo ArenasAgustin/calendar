@@ -11,19 +11,31 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { calendarReducer } from "@/utils/functions";
 
 export default function Calendar({ initialYear }: { initialYear: number }) {
-  const router = useRouter();
-  const [state, dispatch] = useReducer(calendarReducer, {
+  const initialState = {
     currentYear: initialYear,
     selectedMonth: null,
     selectedDay: null,
     isMonthModalOpen: false,
     isExpandedDay: false,
-    notes: [],
-  });
+    notes: (() => {
+      try {
+        return JSON.parse(atob(localStorage.getItem("calendarNotes") || "W10="));
+      } catch (e) {
+        return [];
+      }
+    })(),
+  };
+
+  const router = useRouter();
+  const [state, dispatch] = useReducer(calendarReducer, initialState);
 
   useEffect(() => {
     router.push(`/${state.currentYear}`);
   }, [state.currentYear, router]);
+
+  useEffect(() => {
+    localStorage.setItem("calendarNotes", btoa(JSON.stringify(state.notes)));
+  }, [state.notes]);
 
   return (
     <div className="p-6">
