@@ -1,18 +1,9 @@
+import { useMemo, useCallback } from "react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft } from "lucide-react";
-import { useMemo, useCallback } from "react";
-
-type DayNote = { day: number; note: string };
-
-interface DayViewProps {
-  day: number;
-  monthIndex: number;
-  currentYear: number;
-  notes: DayNote[];
-  onBack: () => void;
-  onNoteChange: (day: number, note: string) => void;
-}
+import { DayViewProps } from "@/utils/interfaces";
+import { getDateToString } from "@/utils/functions";
 
 export default function DayView({
   day,
@@ -39,20 +30,13 @@ export default function DayView({
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" size="sm" className="gap-2" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" />
-          Back to{" "}
-          {new Date(currentYear, monthIndex).toLocaleDateString("en", {
-            month: "long",
-          })}
+          Back to {getDateToString("month", currentYear, monthIndex)}
         </Button>
       </div>
 
       <div className="space-y-4">
         <h2 className="text-2xl font-medium">
-          {new Date(currentYear, monthIndex, day).toLocaleDateString("en", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
+          {getDateToString("long", currentYear, monthIndex, day)}
         </h2>
 
         <div className="border rounded-lg p-6 bg-card">

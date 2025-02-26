@@ -1,63 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useReducer, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import DayView from "@/components/DayView";
 import MonthCalendar from "@/components/MonthCalendar";
-
-type DayNote = { day: number; note: string };
-
-type CalendarState = {
-  currentYear: number;
-  selectedMonth: number | null;
-  selectedDay: number | null;
-  isMonthModalOpen: boolean;
-  isExpandedDay: boolean;
-  notes: DayNote[];
-};
-
-type Action =
-  | { type: "SET_YEAR"; payload: number }
-  | { type: "SELECT_MONTH"; payload: number }
-  | { type: "CLOSE_MODAL" }
-  | { type: "SELECT_DAY"; payload: number }
-  | { type: "BACK_TO_MONTH" }
-  | { type: "ADD_NOTE"; payload: DayNote };
-
-function calendarReducer(state: CalendarState, action: Action): CalendarState {
-  switch (action.type) {
-    case "SET_YEAR":
-      return { ...state, currentYear: action.payload };
-    case "SELECT_MONTH":
-      return {
-        ...state,
-        selectedMonth: action.payload,
-        isMonthModalOpen: true,
-        isExpandedDay: false,
-      };
-    case "CLOSE_MODAL":
-      return { ...state, isMonthModalOpen: false };
-    case "SELECT_DAY":
-      return { ...state, selectedDay: action.payload, isExpandedDay: true };
-    case "BACK_TO_MONTH":
-      return { ...state, isExpandedDay: false, selectedDay: null };
-    case "ADD_NOTE":
-      return {
-        ...state,
-        notes: state.notes.some((n) => n.day === action.payload.day)
-          ? state.notes.map((n) =>
-              n.day === action.payload.day ? action.payload : n
-            )
-          : [...state.notes, action.payload],
-      };
-    default:
-      return state;
-  }
-}
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { calendarReducer } from "@/utils/functions";
 
 export default function Calendar({ initialYear }: { initialYear: number }) {
   const router = useRouter();
@@ -159,7 +110,7 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
                     currentYear={state.currentYear}
                     notes={state.notes}
                     onBack={() => dispatch({ type: "BACK_TO_MONTH" })}
-                    onNoteChange={(day, note) =>
+                    onNoteChange={(_, note) =>
                       dispatch({
                         type: "ADD_NOTE",
                         payload: { day: state.selectedDay!, note },

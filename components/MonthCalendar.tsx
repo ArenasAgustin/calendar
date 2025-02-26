@@ -1,32 +1,13 @@
 import { useMemo } from "react";
 import { DialogTitle } from "@/components/ui/dialog";
-
-type DayNote = { day: number; note: string };
-
-interface MonthCalendarProps {
-  monthIndex: number;
-  currentYear: number;
-  large?: boolean;
-  notes?: DayNote[];
-  onSelectDay: (day: number) => void;
-}
-
-const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-const getDaysInMonth = (month: number, year: number) =>
-  new Date(year, month + 1, 0).getDate();
-
-const getFirstDayOfMonth = (month: number, year: number) =>
-  new Date(year, month, 1).getDay();
-
-const isToday = (day: number, month: number, year: number) => {
-  const today = new Date();
-  return (
-    day === today.getDate() &&
-    month === today.getMonth() &&
-    year === today.getFullYear()
-  );
-};
+import { weekDays } from "@/utils/constants";
+import {
+  getDaysInMonth,
+  getFirstDayOfMonth,
+  isToday,
+  getDateToString,
+} from "@/utils/functions";
+import { MonthCalendarProps } from "@/utils/interfaces";
 
 export default function MonthCalendar({
   monthIndex,
@@ -64,22 +45,20 @@ export default function MonthCalendar({
     return new Map(notes.map((note) => [note.day, note.note]));
   }, [notes]);
 
+  const montString = getDateToString("month", currentYear, monthIndex);
+
   return (
     <div className={`p-4 ${large ? "w-full" : "border rounded-lg"}`}>
       {!large && (
         <h2 className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}>
-          {new Date(currentYear, monthIndex).toLocaleString("en", {
-            month: "long",
-          })}
+          {montString}
         </h2>
       )}
       {large && (
         <DialogTitle
           className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}
         >
-          {new Date(currentYear, monthIndex).toLocaleString("en", {
-            month: "long",
-          })}
+          {montString}
         </DialogTitle>
       )}
       <div
