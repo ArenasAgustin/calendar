@@ -42,7 +42,12 @@ export default function MonthCalendar({
   }, [monthIndex, currentYear]);
 
   const notesMap = useMemo(() => {
-    return new Map(notes.map((note) => [note.day, note.note]));
+    const map = new Map();
+    notes.forEach((note) => {
+      const key = `${note.day}-${note.month ?? ""}-${note.year ?? ""}`;
+      map.set(key, note.note);
+    });
+    return map;
   }, [notes]);
 
   const montString = getDateToString("month", currentYear, monthIndex);
@@ -76,6 +81,14 @@ export default function MonthCalendar({
         ))}
         {monthDays.map((day, index) => {
           if (large) {
+            const noteKeyDay = `${day.day}--`;
+            const noteKeyMonth = `${day.day}-${monthIndex}-`;
+            const noteKeyYear = `${day.day}-${monthIndex}-${currentYear}`;
+            const note =
+              notesMap.get(noteKeyYear) ||
+              notesMap.get(noteKeyMonth) ||
+              notesMap.get(noteKeyDay);
+
             return (
               <div
                 key={index}
@@ -100,9 +113,9 @@ export default function MonthCalendar({
                 >
                   {day.day}
                 </div>
-                {day.isCurrentMonth && notesMap.has(day.day as number) && (
+                {day.isCurrentMonth && note && (
                   <p className="text-xs text-muted-foreground line-clamp-4">
-                    {notesMap.get(day.day as number)}
+                    {note}
                   </p>
                 )}
               </div>

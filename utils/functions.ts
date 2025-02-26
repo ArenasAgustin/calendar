@@ -37,13 +37,28 @@ export function calendarReducer(
     case "BACK_TO_MONTH":
       return { ...state, isExpandedDay: false, selectedDay: null };
     case "ADD_NOTE":
+      const newNote = {
+        ...action.payload,
+        month: action.payload.month ?? state.selectedMonth,
+        year: action.payload.year ?? state.currentYear,
+      };
+
       return {
         ...state,
-        notes: state.notes.some((n) => n.day === action.payload.day)
+        notes: state.notes.some(
+          (n) =>
+            n.day === newNote.day &&
+            n.month === newNote.month &&
+            n.year === newNote.year
+        )
           ? state.notes.map((n) =>
-              n.day === action.payload.day ? action.payload : n
+              n.day === newNote.day &&
+              n.month === newNote.month &&
+              n.year === newNote.year
+                ? newNote
+                : n
             )
-          : [...state.notes, action.payload],
+          : [...state.notes, newNote],
       };
     default:
       return state;

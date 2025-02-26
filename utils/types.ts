@@ -1,4 +1,9 @@
-export type DayNote = { day: number; note: string };
+export type DayNote = {
+  day: number;
+  month?: number | null;
+  year?: number;
+  note: string;
+};
 
 export type CalendarState = {
   currentYear: number;

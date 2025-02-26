@@ -113,7 +113,12 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
                     onNoteChange={(_, note) =>
                       dispatch({
                         type: "ADD_NOTE",
-                        payload: { day: state.selectedDay!, note },
+                        payload: {
+                          day: state.selectedDay!,
+                          month: state.selectedMonth,
+                          year: state.currentYear,
+                          note,
+                        },
                       })
                     }
                   />
