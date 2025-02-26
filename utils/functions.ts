@@ -78,6 +78,8 @@ export function getDateToString(
   if (type === "long") {
     typeConfig.day = "numeric";
     typeConfig.year = "numeric";
+  } else if (type === "month-year") {
+    typeConfig.year = "numeric";
   }
 
   return new Date(year, month, day).toLocaleString("en", typeConfig);

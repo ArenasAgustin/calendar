@@ -50,20 +50,18 @@ export default function MonthCalendar({
     return map;
   }, [notes]);
 
-  const montString = getDateToString("month", currentYear, monthIndex);
-
   return (
     <div className={`p-4 ${large ? "w-full" : "border rounded-lg"}`}>
       {!large && (
         <h2 className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}>
-          {montString}
+          {getDateToString("month", currentYear, monthIndex)}
         </h2>
       )}
       {large && (
         <DialogTitle
           className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}
         >
-          {montString}
+          {getDateToString("month-year", currentYear, monthIndex)}
         </DialogTitle>
       )}
       <div
