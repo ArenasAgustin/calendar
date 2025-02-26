@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 type DayNote = { day: number; note: string };
 
@@ -60,24 +61,35 @@ export default function MonthCalendar({
   }, [monthIndex, currentYear]);
 
   const notesMap = useMemo(() => {
-      return new Map(notes.map((note) => [note.day, note.note]));
-    }, [notes]);
-  
-    // Memoizar la función de selección de día
-    const handleSelectDay = useCallback(
-      (day: number) => {
-        if (day) onSelectDay(day);
-      },
-      [onSelectDay]
-    );
+    return new Map(notes.map((note) => [note.day, note.note]));
+  }, [notes]);
+
+  // Memoizar la función de selección de día
+  const handleSelectDay = useCallback(
+    (day: number) => {
+      if (day) onSelectDay(day);
+    },
+    [onSelectDay]
+  );
 
   return (
     <div className={`p-4 ${large ? "w-full" : "border rounded-lg"}`}>
-      <h2 className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}>
-        {new Date(currentYear, monthIndex).toLocaleString("en", {
-          month: "long",
-        })}
-      </h2>
+      {!large && (
+        <h2 className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}>
+          {new Date(currentYear, monthIndex).toLocaleString("en", {
+            month: "long",
+          })}
+        </h2>
+      )}
+      {large && (
+        <DialogTitle
+          className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}
+        >
+          {new Date(currentYear, monthIndex).toLocaleString("en", {
+            month: "long",
+          })}
+        </DialogTitle>
+      )}
       <div
         className={`grid grid-cols-7 ${
           large ? "gap-4" : "gap-1 text-center text-sm"
@@ -118,10 +130,10 @@ export default function MonthCalendar({
                   {day.day}
                 </div>
                 {day.isCurrentMonth && notesMap.has(day.day as number) && (
-              <p className="text-xs text-muted-foreground line-clamp-4">
-                {notesMap.get(day.day as number)}
-              </p>
-            )}
+                  <p className="text-xs text-muted-foreground line-clamp-4">
+                    {notesMap.get(day.day as number)}
+                  </p>
+                )}
               </div>
             );
           }
