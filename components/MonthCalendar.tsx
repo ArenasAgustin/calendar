@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { DialogTitle } from "@/components/ui/dialog";
 
 type DayNote = { day: number; note: string };
