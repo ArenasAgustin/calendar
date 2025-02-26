@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { DialogTitle } from "@/components/ui/dialog";
 
 type DayNote = { day: number; note: string };
 
@@ -63,14 +63,6 @@ export default function MonthCalendar({
   const notesMap = useMemo(() => {
     return new Map(notes.map((note) => [note.day, note.note]));
   }, [notes]);
-
-  // Memoizar la función de selección de día
-  const handleSelectDay = useCallback(
-    (day: number) => {
-      if (day) onSelectDay(day);
-    },
-    [onSelectDay]
-  );
 
   return (
     <div className={`p-4 ${large ? "w-full" : "border rounded-lg"}`}>
