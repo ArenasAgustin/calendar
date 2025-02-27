@@ -18,13 +18,8 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
     isMonthModalOpen: false,
     isExpandedDay: false,
     notes: (() => {
-      try {
-        return JSON.parse(
-          atob(localStorage.getItem("calendarNotes") || "W10=")
-        );
-      } catch (e) {
-        return [];
-      }
+      const storedNotes = localStorage.getItem("calendarNotes");
+      return storedNotes ? JSON.parse(atob(storedNotes)) : [];
     })(),
   };
 
