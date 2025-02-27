@@ -19,7 +19,9 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
     isExpandedDay: false,
     notes: (() => {
       try {
-        return JSON.parse(atob(localStorage.getItem("calendarNotes") || "W10="));
+        return JSON.parse(
+          atob(localStorage.getItem("calendarNotes") || "W10=")
+        );
       } catch (e) {
         return [];
       }
@@ -73,7 +75,6 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
         {Array.from({ length: 12 }, (_, index) => (
           <div
             key={index}
-            className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => dispatch({ type: "SELECT_MONTH", payload: index })}
           >
             <MonthCalendar

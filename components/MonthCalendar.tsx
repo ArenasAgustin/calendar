@@ -51,7 +51,13 @@ export default function MonthCalendar({
   }, [notes]);
 
   return (
-    <div className={`p-4 ${large ? "w-full" : "border rounded-lg"}`}>
+    <div
+      className={`p-4 ${
+        large
+          ? "w-full"
+          : "border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
+      }`}
+    >
       {!large && (
         <h2 className={`font-medium ${large ? "text-2xl mb-6" : "mb-4"}`}>
           {getDateToString("month", currentYear, monthIndex)}
