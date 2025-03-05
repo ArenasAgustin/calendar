@@ -17,14 +17,21 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
     selectedDay: null,
     isMonthModalOpen: false,
     isExpandedDay: false,
-    notes: (() => {
-      const storedNotes = localStorage.getItem("calendarNotes");
-      return storedNotes ? JSON.parse(atob(storedNotes)) : [];
-    })(),
+    notes: [],
   };
 
   const router = useRouter();
   const [state, dispatch] = useReducer(calendarReducer, initialState);
+
+  useEffect(() => {
+    const storedNotes = localStorage.getItem("calendarNotes");
+    if (storedNotes) {
+      dispatch({
+        type: "ADD_NOTE",
+        payload: JSON.parse(atob(storedNotes)),
+      });
+    }
+  }, []);
 
   useEffect(() => {
     router.push(`/${state.currentYear}`);
