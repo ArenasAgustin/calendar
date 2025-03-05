@@ -60,6 +60,20 @@ export function calendarReducer(
             )
           : [...state.notes, newNote],
       };
+    case "DELETE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.filter(
+          (n) =>
+            n.day !== action.payload.day ||
+            n.month !== action.payload.month ||
+            n.year !== action.payload.year
+        ),
+      };
+    case "DELETE_ALL_NOTES":
+      return { ...state, notes: [] };
+    case "SET_NOTES":
+      return { ...state, notes: action.payload };
     default:
       return state;
   }

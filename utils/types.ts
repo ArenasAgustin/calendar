@@ -20,4 +20,7 @@ export type Action =
   | { type: "CLOSE_MODAL" }
   | { type: "SELECT_DAY"; payload: number }
   | { type: "BACK_TO_MONTH" }
-  | { type: "ADD_NOTE"; payload: DayNote };
+  | { type: "ADD_NOTE"; payload: DayNote }
+  | { type: "DELETE_NOTE"; payload: DayNote }
+  | { type: "DELETE_ALL_NOTES" }
+  | { type: "SET_NOTES"; payload: DayNote[] };
