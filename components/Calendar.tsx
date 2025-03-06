@@ -11,6 +11,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { calendarReducer } from "@/utils/functions";
 
 export default function Calendar({ initialYear }: { initialYear: number }) {
+  const router = useRouter();
+
   const initialState = {
     currentYear: initialYear,
     selectedMonth: null,
@@ -20,26 +22,25 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
     notes: [],
   };
 
-  const router = useRouter();
   const [state, dispatch] = useReducer(calendarReducer, initialState);
 
   useEffect(() => {
     const storedNotes = localStorage.getItem("calendarNotes");
     if (storedNotes) {
       dispatch({
-        type: "ADD_NOTE",
+        type: "SET_NOTES",
         payload: JSON.parse(atob(storedNotes)),
       });
     }
   }, []);
 
   useEffect(() => {
-    router.push(`/${state.currentYear}`);
-  }, [state.currentYear, router]);
-
-  useEffect(() => {
     localStorage.setItem("calendarNotes", btoa(JSON.stringify(state.notes)));
   }, [state.notes]);
+
+  useEffect(() => {
+    router.push(`/${state.currentYear}`);
+  }, [state.currentYear, router]);
 
   return (
     <div className="p-6">
@@ -94,17 +95,17 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
         open={state.isMonthModalOpen}
         onOpenChange={() => dispatch({ type: "CLOSE_MODAL" })}
       >
-        <DialogContent className="max-w-7xl p-0">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="relative h-[800px] bg-muted">
+        <DialogContent className="max-w-full lg:max-w-7xl p-0 h-auto max-h-screen">
+          <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1 grid-flow-dense h-full max-h-screen">
+            <div className="relative h-full max-h-[800px] bg-muted">
               <Image
                 src="https://v0.dev/placeholder.svg"
                 alt="Month illustration"
                 fill
-                className="object-cover"
+                className="object-cover h-full"
               />
             </div>
-            <div className="h-[800px] overflow-y-auto">
+            <div className="h-full max-h-[800px] overflow-y-auto">
               {state.selectedMonth !== null && !state.isExpandedDay && (
                 <MonthCalendar
                   monthIndex={state.selectedMonth}
