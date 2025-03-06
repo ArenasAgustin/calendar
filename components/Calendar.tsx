@@ -2,13 +2,12 @@
 
 import { useReducer, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import DayView from "@/components/DayView";
 import MonthCalendar from "@/components/MonthCalendar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { calendarReducer } from "@/utils/functions";
+import ModalMonth from "@/components/ModalMonth";
+import ModalNote from "@/components/ModalNote";
 
 export default function Calendar({ initialYear }: { initialYear: number }) {
   const router = useRouter();
@@ -18,6 +17,7 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
     selectedMonth: null,
     selectedDay: null,
     isMonthModalOpen: false,
+    isAddNoteModalOpen: false,
     isExpandedDay: false,
     notes: [],
   };
@@ -68,9 +68,12 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
-        <Button className="bg-aqua hover:bg-aqua/90 text-gray-800">
+        <Button
+          className="bg-aqua hover:bg-aqua/90 text-gray-800"
+          onClick={() => dispatch({ type: "OPEN_MODAL_NOTE" })}
+        >
           <Plus className="w-4 h-4 mr-2" />
-          Add event
+          Add note
         </Button>
       </header>
 
@@ -91,58 +94,10 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
         ))}
       </div>
 
-      <Dialog
-        open={state.isMonthModalOpen}
-        onOpenChange={() => dispatch({ type: "CLOSE_MODAL" })}
-      >
-        <DialogContent className="max-w-full lg:max-w-7xl p-0 h-auto max-h-screen">
-          <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1 grid-flow-dense h-full max-h-screen">
-            <div className="relative h-full max-h-[800px] bg-muted">
-              <Image
-                src="https://v0.dev/placeholder.svg"
-                alt="Month illustration"
-                fill
-                className="object-cover h-full"
-              />
-            </div>
-            <div className="h-full max-h-[800px] overflow-y-auto">
-              {state.selectedMonth !== null && !state.isExpandedDay && (
-                <MonthCalendar
-                  monthIndex={state.selectedMonth}
-                  currentYear={state.currentYear}
-                  notes={state.notes}
-                  onSelectDay={(day) =>
-                    dispatch({ type: "SELECT_DAY", payload: day })
-                  }
-                  large
-                />
-              )}
-              {state.selectedMonth !== null &&
-                state.isExpandedDay &&
-                state.selectedDay !== null && (
-                  <DayView
-                    day={state.selectedDay}
-                    monthIndex={state.selectedMonth}
-                    currentYear={state.currentYear}
-                    notes={state.notes}
-                    onBack={() => dispatch({ type: "BACK_TO_MONTH" })}
-                    onNoteChange={(_, note) =>
-                      dispatch({
-                        type: "ADD_NOTE",
-                        payload: {
-                          day: state.selectedDay!,
-                          month: state.selectedMonth,
-                          year: state.currentYear,
-                          note,
-                        },
-                      })
-                    }
-                  />
-                )}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ModalMonth stateGlobal={state} dispatchGlobal={dispatch} />
+
+      <ModalNote stateGlobal={state} dispatchGlobal={dispatch} 
+              currentYear={state.currentYear} />
     </div>
   );
 }

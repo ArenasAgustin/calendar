@@ -1,20 +1,36 @@
-import { Action, CalendarState } from "@/utils/types";
+import { Action, CalendarState, DayNote } from "@/utils/types";
 import { TypeConfigDateToString } from "@/utils/interfaces";
 
-export const getDaysInMonth = (month: number, year: number) =>
-  new Date(year, month + 1, 0).getDate();
+export function getDaysInMonth(month: number, year: number) {
+  return new Date(year, month + 1, 0).getDate();
+}
 
-export const getFirstDayOfMonth = (month: number, year: number) =>
-  new Date(year, month, 1).getDay();
+export function getFirstDayOfMonth(month: number, year: number): number {
+  const date = new Date(year, month, 1);
+  return date.getDay() ?? 0;
+}
 
-export const isToday = (day: number, month: number, year: number) => {
+export function generateDayOptions(
+  month?: number | string | null,
+  year?: number | string | null
+) {
+  if (!month || !year) return [];
+
+  const daysInMonth = getDaysInMonth(
+    Number.parseInt(month.toString()),
+    Number.parseInt(year.toString())
+  );
+  return Array.from({ length: daysInMonth }, (_, i) => i + 1);
+}
+
+export function isToday(day: number, month: number, year: number) {
   const today = new Date();
   return (
     day === today.getDate() &&
     month === today.getMonth() &&
     year === today.getFullYear()
   );
-};
+}
 
 export function calendarReducer(
   state: CalendarState,
@@ -30,8 +46,12 @@ export function calendarReducer(
         isMonthModalOpen: true,
         isExpandedDay: false,
       };
-    case "CLOSE_MODAL":
+    case "CLOSE_MODAL_MONTH":
       return { ...state, isMonthModalOpen: false };
+    case "CLOSE_MODAL_NOTE":
+      return { ...state, isAddNoteModalOpen: false };
+    case "OPEN_MODAL_NOTE":
+      return { ...state, isAddNoteModalOpen: true };
     case "SELECT_DAY":
       return { ...state, selectedDay: action.payload, isExpandedDay: true };
     case "BACK_TO_MONTH":
@@ -74,6 +94,21 @@ export function calendarReducer(
       return { ...state, notes: [] };
     case "SET_NOTES":
       return { ...state, notes: action.payload };
+    default:
+      return state;
+  }
+}
+
+export function noteReducer(state: DayNote, action: Action): DayNote {
+  switch (action.type) {
+    case "SET_MONTH":
+      return { ...state, month: action.payload };
+    case "SET_DAY":
+      return { ...state, day: action.payload };
+    case "SET_YEAR":
+      return { ...state, year: action.payload };
+    case "SET_NOTE":
+      return { ...state, note: action.payload };
     default:
       return state;
   }
