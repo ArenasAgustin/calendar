@@ -1,0 +1,17 @@
+[
+  {
+    "month": 0,
+    "day": 1,
+    "note": "New Year's Day"
+  },
+  {
+    "month": 9,
+    "day": 31,
+    "note": "Halloween"
+  },
+  {
+    "month": 11,
+    "day": 25,
+    "note": "Christmas Day"
+  }
+]
