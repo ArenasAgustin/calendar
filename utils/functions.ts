@@ -1,3 +1,4 @@
+import { isLocal } from "@/utils/constants";
 import { TypeConfigDateToString } from "@/utils/interfaces";
 import { Action, CalendarState, DayNote } from "@/utils/types";
 
@@ -132,4 +133,23 @@ export function getDateToString(
   }
 
   return new Date(year, month, day).toLocaleString("en", typeConfig);
+}
+
+export async function fetchNotes(dispatch: React.Dispatch<Action>) {
+  let storedNotes: DayNote[] = [];
+
+  if (isLocal) {
+    const response = await fetch("/api");
+    storedNotes = await response.json();
+  } else {
+    const notes = localStorage.getItem("calendarNotes");
+    storedNotes = notes ? JSON.parse(atob(notes)) : [];
+  }
+
+  if (storedNotes) {
+    dispatch({
+      type: "SET_NOTES",
+      payload: storedNotes,
+    });
+  }
 }

@@ -4,10 +4,10 @@ import { useReducer, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import MonthCalendar from "@/components/MonthCalendar";
-import { Button } from "@/components/ui/button";
-import { calendarReducer } from "@/utils/functions";
 import ModalMonth from "@/components/ModalMonth";
 import ModalNote from "@/components/ModalNote";
+import { Button } from "@/components/ui/button";
+import { calendarReducer, fetchNotes } from "@/utils/functions";
 
 export default function Calendar({ initialYear }: { initialYear: number }) {
   const router = useRouter();
@@ -25,13 +25,8 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
   const [state, dispatch] = useReducer(calendarReducer, initialState);
 
   useEffect(() => {
-    const storedNotes = localStorage.getItem("calendarNotes");
-    if (storedNotes) {
-      dispatch({
-        type: "SET_NOTES",
-        payload: JSON.parse(atob(storedNotes)),
-      });
-    }
+    fetchNotes(dispatch);
+    console.log(state.notes);
   }, []);
 
   useEffect(() => {
@@ -96,8 +91,11 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
 
       <ModalMonth stateGlobal={state} dispatchGlobal={dispatch} />
 
-      <ModalNote stateGlobal={state} dispatchGlobal={dispatch} 
-              currentYear={state.currentYear} />
+      <ModalNote
+        stateGlobal={state}
+        dispatchGlobal={dispatch}
+        currentYear={state.currentYear}
+      />
     </div>
   );
 }

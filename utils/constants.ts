@@ -22,3 +22,5 @@ export const months: string[] = [
   "November",
   "December",
 ];
+
+export const isLocal = process.env.NODE_ENV === "development";
