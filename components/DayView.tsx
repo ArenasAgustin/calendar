@@ -1,7 +1,6 @@
 import { useMemo, useCallback } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { DayViewProps } from "@/utils/interfaces";
 import { getDateToString } from "@/utils/functions";
 
@@ -13,13 +12,13 @@ export default function DayView({
   onBack,
   onNoteChange,
 }: DayViewProps) {
-  const note = useMemo(
-    () => notes.find((note) => note.day === day)?.note || "",
+  const notesDay = useMemo(
+    () => notes.filter((note) => note.day === day),
     [notes, day]
   );
 
   const handleNoteChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       onNoteChange(day, e.target.value);
     },
     [day, onNoteChange]
@@ -39,14 +38,11 @@ export default function DayView({
           {getDateToString("long", currentYear, monthIndex, day)}
         </h2>
 
-        <div className="border rounded-lg p-6 bg-card">
-          <Textarea
-            placeholder="Add your notes for this day..."
-            className="min-h-[400px] resize-none text-base"
-            value={note}
-            onChange={handleNoteChange}
-          />
-        </div>
+        {notesDay.map((note, index) => (
+          <div className="border rounded-lg p-6 bg-card text-base" key={index}>
+            {note.note}
+          </div>
+        ))}
       </div>
     </div>
   );
