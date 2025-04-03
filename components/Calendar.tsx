@@ -26,7 +26,6 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
 
   useEffect(() => {
     fetchNotes(dispatch);
-    console.log(state.notes);
   }, []);
 
   useEffect(() => {
