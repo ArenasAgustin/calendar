@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DayViewProps } from "@/utils/interfaces";
@@ -10,18 +10,10 @@ export default function DayView({
   currentYear,
   notes,
   onBack,
-  onNoteChange,
 }: DayViewProps) {
   const notesDay = useMemo(
     () => notes.filter((note) => note.day === day),
     [notes, day]
-  );
-
-  const handleNoteChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onNoteChange(day, e.target.value);
-    },
-    [day, onNoteChange]
   );
 
   return (

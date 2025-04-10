@@ -48,17 +48,6 @@ export default function ModalMonth({
                   currentYear={stateGlobal.currentYear}
                   notes={stateGlobal.notes}
                   onBack={() => dispatchGlobal({ type: "BACK_TO_MONTH" })}
-                  onNoteChange={(_, note) =>
-                    dispatchGlobal({
-                      type: "ADD_NOTE",
-                      payload: {
-                        day: stateGlobal.selectedDay!,
-                        month: stateGlobal.selectedMonth,
-                        year: stateGlobal.currentYear,
-                        note,
-                      },
-                    })
-                  }
                 />
               )}
           </div>

@@ -14,7 +14,6 @@ export interface DayViewProps {
   currentYear: number;
   notes: DayNote[];
   onBack: () => void;
-  onNoteChange: (day: number, note: string) => void;
 }
 
 export interface TypeConfigDateToString {
