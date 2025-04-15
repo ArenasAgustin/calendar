@@ -64,6 +64,8 @@ export function calendarReducer(
         year: action.payload.year ?? state.currentYear,
       };
 
+      saveNote(newNote);
+
       return {
         ...state,
         notes: state.notes.some(
@@ -151,5 +153,25 @@ export async function fetchNotes(dispatch: React.Dispatch<Action>) {
       type: "SET_NOTES",
       payload: storedNotes,
     });
+  }
+}
+
+export async function saveNote(note: DayNote) {
+  if (isLocal) {
+    await fetch("/api", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  } else {
+    const notes = localStorage.getItem("calendarNotes");
+    const parsedNotes = notes ? JSON.parse(atob(notes)) : [];
+
+    localStorage.setItem(
+      "calendarNotes",
+      btoa(JSON.stringify([...parsedNotes, note]))
+    );
   }
 }
