@@ -12,12 +12,18 @@ export default function DayView({
   onBack,
 }: DayViewProps) {
   const notesDay = useMemo(
-    () => notes.filter((note) => note.day === day),
-    [notes, day]
+    () =>
+      notes.filter(
+        (note) =>
+          note.day === day &&
+          (note.month === undefined || note.month === monthIndex) &&
+          (note.year === undefined || note.year === currentYear)
+      ),
+    [notes, day, monthIndex, currentYear]
   );
 
   return (
-    <div className="p-6 w-full">
+    <div className="p-6 w-full h-screen max-h-[800px]">
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" size="sm" className="gap-2" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" />
