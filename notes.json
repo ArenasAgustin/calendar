@@ -5,6 +5,36 @@
     "note": "New Year's Day"
   },
   {
+    "month": 1,
+    "day": 14,
+    "note": "Valentine's Day"
+  },
+  {
+    "month": 2,
+    "day": 24,
+    "note": "Day of Remembrance for Truth and Justice"
+  },
+  {
+    "month": 4,
+    "day": 1,
+    "note": "Labor Day"
+  },
+  {
+    "month": 5,
+    "day": 25,
+    "note": "May Revolution Day"
+  },
+  {
+    "month": 6,
+    "day": 20,
+    "note": "Flag Day"
+  },
+  {
+    "month": 7,
+    "day": 9,
+    "note": "Independence Day"
+  },
+  {
     "month": 9,
     "day": 31,
     "note": "Halloween"
@@ -13,5 +43,10 @@
     "month": 11,
     "day": 25,
     "note": "Christmas Day"
+  },
+  {
+    "month": 11,
+    "day": 31,
+    "note": "New Year's Eve"
   }
 ]
