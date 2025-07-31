@@ -48,9 +48,19 @@ export function calendarReducer(
         isExpandedDay: false,
       };
     case "CLOSE_MODAL_MONTH":
-      return { ...state, isMonthModalOpen: false };
+      return {
+        ...state,
+        selectedDay: null,
+        selectedMonth: null,
+        isMonthModalOpen: false,
+      };
     case "CLOSE_MODAL_NOTE":
-      return { ...state, isAddNoteModalOpen: false };
+      return {
+        ...state,
+        selectedDay: null,
+        selectedMonth: null,
+        isAddNoteModalOpen: false,
+      };
     case "OPEN_MODAL_NOTE":
       return { ...state, isAddNoteModalOpen: true };
     case "SELECT_DAY":
