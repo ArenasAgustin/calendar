@@ -1,4 +1,5 @@
 /// <reference types="jest" />
+/// <reference types="@testing-library/jest-dom" />
 
 // Extend global namespace to include Jest globals
 declare global {

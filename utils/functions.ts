@@ -15,7 +15,7 @@ export function generateDayOptions(
   month?: number | string | null,
   year?: number | string | null
 ) {
-  if (!month || !year) return [];
+  if (month == null || year == null) return [];
 
   const daysInMonth = getDaysInMonth(
     Number.parseInt(month.toString()),

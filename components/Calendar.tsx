@@ -25,6 +25,10 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
   const [state, dispatch] = useReducer(calendarReducer, initialState);
 
   useEffect(() => {
+    dispatch({ type: "SET_YEAR", payload: initialYear });
+  }, [initialYear]);
+
+  useEffect(() => {
     fetchNotes(dispatch);
   }, []);
 
@@ -33,8 +37,8 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
   }, [state.notes]);
 
   useEffect(() => {
-    router.push(`/${state.currentYear}`);
-  }, [state.currentYear, router]);
+    router.push(`/${initialYear}`);
+  }, [initialYear, router]);
 
   return (
     <div className="p-6">
@@ -44,19 +48,22 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
             variant="outline"
             size="icon"
             onClick={() =>
-              dispatch({ type: "SET_YEAR", payload: state.currentYear - 1 })
+              dispatch({ type: "SET_YEAR", payload: initialYear - 1 })
             }
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-2xl font-semibold min-w-[4.5rem] text-center">
-            {state.currentYear}
+          <h1
+            className="text-2xl font-semibold min-w-[4.5rem] text-center"
+            data-testid="current-year"
+          >
+            {initialYear}
           </h1>
           <Button
             variant="outline"
             size="icon"
             onClick={() =>
-              dispatch({ type: "SET_YEAR", payload: state.currentYear + 1 })
+              dispatch({ type: "SET_YEAR", payload: initialYear + 1 })
             }
           >
             <ChevronRight className="h-4 w-4" />
@@ -79,7 +86,7 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
           >
             <MonthCalendar
               monthIndex={index}
-              currentYear={state.currentYear}
+              currentYear={initialYear}
               onSelectDay={(day) =>
                 dispatch({ type: "SELECT_DAY", payload: day })
               }
@@ -93,7 +100,7 @@ export default function Calendar({ initialYear }: { initialYear: number }) {
       <ModalNote
         stateGlobal={state}
         dispatchGlobal={dispatch}
-        currentYear={state.currentYear}
+        currentYear={initialYear}
       />
     </div>
   );

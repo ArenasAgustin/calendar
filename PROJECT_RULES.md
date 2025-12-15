@@ -8,22 +8,28 @@ Este proyecto es una aplicación de calendario desarrollada con Next.js, React, 
 
 ```
 calendar/
-├── app/                    # Next.js App Router
-│   ├── [year]/            # Rutas dinámicas por año
-│   ├── api/               # API Routes
-│   ├── globals.css        # Estilos globales
-│   ├── layout.tsx         # Layout principal
-│   └── page.tsx           # Página principal
-├── components/            # Componentes React
+├── app/                  # Next.js App Router
+│   ├── [year]/           # Rutas dinámicas por año
+│   ├── api/              # API Routes
+│   ├── globals.css       # Estilos globales
+│   ├── layout.tsx        # Layout principal
+│   └── page.tsx          # Página principal
+├── components/           # Componentes React
 │   ├── ui/               # Componentes UI reutilizables (shadcn/ui)
 │   └── *.tsx             # Componentes específicos del calendario
+├── __tests__/            # Tests con Jest y React Testing Library
+│   ├── components/       # Tests de componentes
+│   ├── utils/            # Tests de utilidades
+│   └── *.test.tsx        # Archivos de test
 ├── utils/                # Utilidades y configuración
 │   ├── constants.ts      # Constantes globales
 │   ├── functions.ts      # Funciones utilitarias
 │   ├── interfaces.ts     # Interfaces TypeScript
 │   └── types.ts          # Tipos TypeScript
 ├── public/               # Archivos estáticos
-└── lib/                  # Librerías y configuraciones
+├── lib/                  # Librerías y configuraciones
+├── jest.setup.js         # Configuración global de Jest
+└── jest.d.ts             # Tipos TypeScript para Jest
 ```
 
 ## 🔧 Tecnologías y Dependencias
@@ -159,24 +165,43 @@ interface DayNote {
 
 ## 🧪 Testing y Calidad
 
-### 1. ESLint
+### 1. Jest Testing Setup
+- **Framework**: Jest con React Testing Library
+- **Configuración**: `jest.setup.js` para configuración global
+- **Tipos**: `jest.d.ts` incluye tipos de Jest y @testing-library/jest-dom
+- **Matchers extendidos**: `toBeInTheDocument()`, `toHaveClass()`, etc.
+- **Ubicación tests**: `__tests__/` directorio en la raíz
+- **Mocking**: Mock de Next.js router y componentes en tests
+
+```typescript
+// jest.d.ts - Configuración de tipos
+/// <reference types="jest" />
+/// <reference types="@testing-library/jest-dom" />
+```
+
+### 2. ESLint
 - **Configuración**: Next.js + TypeScript rules
 - **Ejecutar**: `npm run lint` antes de commits
 - **Auto-fix**: Configurar en el editor
 
-### 2. Mejores Prácticas
+### 3. Mejores Prácticas
 - **Funciones puras**: Preferir funciones sin efectos secundarios
 - **Separación de responsabilidades**: Un archivo, una responsabilidad
 - **Reutilización**: Extraer lógica común a utilidades
+- **Testing**: Escribir tests para componentes críticos
 
 ## 🚀 Desarrollo y Deploy
 
 ### 1. Scripts Disponibles
 ```bash
-npm run dev        # Desarrollo con Turbopack
-npm run build      # Build de producción
-npm run start      # Servidor de producción
-npm run lint       # Linting
+pnpm run dev        # Desarrollo con Turbopack
+pnpm run build      # Build de producción
+pnpm run start      # Servidor de producción
+pnpm run lint       # Linting
+pnpm run test       # Ejecutar tests
+pnpm run test:watch # Ejecutar tests en modo watch
+pnpm run test:verbose # Ejecutar tests con más verbosidad
+pnpm run test:coverage # Ejecutar tests con cobertura
 ```
 
 ## 📦 Dependencias
