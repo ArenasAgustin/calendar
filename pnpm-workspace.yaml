@@ -4,13 +4,13 @@ allowBuilds:
 
 overrides:
   js-yaml: 4.3.0
-  brace-expansion: 2.0.3
+  brace-expansion: 2.1.2
   ajv: 6.14.0
   'minimatch@3': 3.1.4
   'minimatch@9': 9.0.7
   flatted: 3.4.2
   handlebars: 4.7.9
   picomatch: 4.0.4
-  postcss: 8.5.10
+  postcss: 8.5.18
   ws: 8.21.1
   '@babel/core': 7.29.6
